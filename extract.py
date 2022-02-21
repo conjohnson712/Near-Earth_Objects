@@ -25,10 +25,6 @@ def load_neos(neo_csv_path):
     :param neo_csv_path: A path to a CSV file containing data about near-Earth objects.
     :return: A collection of `NearEarthObject`s.
 
-    Structure of function inspired by Lesson 5, Content 9: CSV I/O:
-    https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/5f6da81f-9ca0-4a6b-9b3c-66cadfd9a1c1/concepts/e86aadb6-0dd7-4bf9-9950-b1d772e6e71c
-    (Accessed: 2/18/22)
-
     Default values are enforced using if/else statements. Spaces added 
     between statements for readability. Key values used in neo_data_out 
     were designed to match the headers from the csv file. Arguments are 
@@ -37,6 +33,13 @@ def load_neos(neo_csv_path):
     Row['pha'] was originally Row['hazardous'], but raised errors that 
     I could only seem to solve by making it match the CSV file header 
     for hazardous. 
+
+
+    References:
+
+    Structure of function inspired by Lesson 5, Content 9: CSV I/O:
+    https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/5f6da81f-9ca0-4a6b-9b3c-66cadfd9a1c1/concepts/e86aadb6-0dd7-4bf9-9950-b1d772e6e71c
+    (Accessed: 2/18/22)
     """
     
     with open(neo_csv_path, 'r') as neo_infile: 
@@ -80,6 +83,8 @@ def load_approaches(cad_json_path):
     :param cad_json_path: A path to a JSON file containing data about close approaches.
     :return: A collection of `CloseApproach`es.
 
+    References: 
+    
     Structure of function inspired by Lesson 5, Concept 6: JSON I/O:
     https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/5f6da81f-9ca0-4a6b-9b3c-66cadfd9a1c1/concepts/9c97771c-96d8-40f8-97e8-1e988369f46b
     (Accessed: 2/18/22)

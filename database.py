@@ -119,11 +119,13 @@ class NEODatabase:
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
 
-        Inspired by .get portion of Lesson 2, Concept 17: Dictionaries: 
-        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/b0daa716-c1d0-4f3a-9608-5506bf99db0e
-
         .capitalize() was added to ensure the names match those in the data. 
         .get allows for the default value of None to be set
+
+        References: 
+
+        Inspired by .get portion of Lesson 2, Concept 17: Dictionaries: 
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/b0daa716-c1d0-4f3a-9608-5506bf99db0e
         """
         
         
@@ -143,12 +145,13 @@ class NEODatabase:
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
 
+        References: 
+
         Inspired by pseudocode from the following Knowledge question: 
         https://knowledge.udacity.com/questions/633232
 
         And from Lesson 3, Concept 13/14: Higher Order Functions Exercise 
         https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/406e03f0-82b1-46aa-b7c1-0223223240cb/concepts/e6d2975e-ce00-4a31-b778-dca024115eab
-
         """
 
         for approach in self._approaches:

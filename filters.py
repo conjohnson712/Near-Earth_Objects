@@ -192,11 +192,13 @@ def create_filters(date=None, start_date=None, end_date=None,
         filters follow this also, with 'date' being the relative 
         point of comparison. This concept will be used throughout.
 
-        Inspired from Tasks 3A: 'On Comparing Dates':
-        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/ab4e6345-8dc2-4439-8c67-afa21ae710ce/concepts/c6dc8c7b-97e2-42e6-a77a-64fb39b27203
-
         With parameters defaulted to None, we will use if statements to 
         check against them not being None to cover all edge cases.
+
+        References:
+
+        Inspired from Tasks 3A: 'On Comparing Dates':
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/ab4e6345-8dc2-4439-8c67-afa21ae710ce/concepts/c6dc8c7b-97e2-42e6-a77a-64fb39b27203        
     """
 
     if start_date is not None:
@@ -242,6 +244,8 @@ def limit(iterator, n=None):
     :param n: The maximum number of values to produce.
     :yield: The first (at most) `n` values from the iterator.
 
+    References: 
+    
     Inspired by the following answers in Knowledge provided by the 
     Mentor Shuaishuai:
     https://knowledge.udacity.com/questions/676611
