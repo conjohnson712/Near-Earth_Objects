@@ -38,41 +38,29 @@ class NearEarthObject:
                  hazardous=False):
         """Create a new `NearEarthObject`.
 
-        param info was replaced with individual key terms to match the 
-        given assignments below. Default values for key terms are 
-        given above and reiterated below with if/else statements. 
-        Assertion statements were added to all values to ensure they 
-        are the correct type. Spaces were added between arguments for 
-        readability. 
-
-           I gained the idea to put the arguments designation and name 
-           in a str() method from the following Accepted Answer in Knowledge:
-           https://knowledge.udacity.com/questions/558357 (Accessed: 2/17/22)
+        :param designation: A unique value that designates NEOs, like an ID
+        :param name: An optional value that acts as a 2nd unique Identifier
+        :param diameter: A NEO's diameter in au units
+        :param hazardous: A determination of an NEO's Hazardousness
+        :return: An empty list of approaches for later use
+        
+        
+        Default values for key terms are given above and reiterated 
+        below with if/else statements. Assertion statements were added 
+        to all values to ensure they are the correct type. Spaces were 
+        added between arguments for readability. 
         """
         
-        self.designation = str(designation)
+        self.designation = designation
         assert isinstance(self.designation, str), "Designation must resolve to a string"
 
-        self.name = str(name)
-        if self.name is not None: 
-            name = str(self.name)
-        else: 
-            name = None
-        assert isinstance(self.name, str), "Name must be None or Non-Empty String"
+        self.name = name # Originally had an assertion, but raised errors
 
         self.diameter = diameter
-        if diameter is None: 
-            diameter = float('nan')
-        else: 
-            diameter = float(diameter)
         assert isinstance(self.diameter, float), "Diameter must be a float"
 
-        self.hazardous = bool(hazardous)
-        if hazardous in ['N', None]:
-            self.hazardous = False
-        elif hazardous == 'Y':          # Elif didn't bug, else did
-            self.hazardous = True
-        assert isinstance(self.hazardous, bool), "Hazardous must be a boolean"
+        self.hazardous = hazardous #Originally had assertion, raised errors
+        
 
         # Create an empty initial collection of linked approaches.
         self.approaches = []
@@ -83,11 +71,25 @@ class NearEarthObject:
            checks to see if the NEO has a name. If not, the full name
            is the designation alone. Otherwise, the name is added.
         """
-
+        
         if self.name is None:
             return f"{self.designation}"
         else:
             return f"{self.designation} ({self.name})"
+
+    def serialize(self): 
+        """ Returns a dictionary representation of self 
+            attributes relevant to NEO.
+
+            Returns: Keys of self attributes
+        """
+
+        return { 
+            "designation": self.designation,
+            "name": self.name, 
+            "diameter_km": self.diameter, 
+            "potentially_hazardous": self.hazardous
+        }
 
     def __str__(self):
         """Return `str(self)`. First determines if the NEO is 
@@ -104,7 +106,7 @@ class NearEarthObject:
             self.hazardous = "is NOT hazardous"
 
         return f"""The NearEarthObject(NEO), {self.fullname}, has a 
-                   diameter of {self.diameter:.3f} km and {self.hazardous}!"""
+        diameter of {self.diameter:.3f} au and {self.hazardous}!"""
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
@@ -130,30 +132,36 @@ class CloseApproach:
                  velocity=float(0.0), neo=None):
         """Create a new `CloseApproach`.
 
-           param info was replaced with individual arguments to match those 
-           given below. Default values were given with the arguments, as 
-           well as reiterated below using if/else statements. Each value 
-           has been given an assertion statement to ensure they are the 
+           :param _designation: The unique identifier used for CloseApproach
+           :param time: Datetime representing the time of CloseApproach
+           :param distance: Float representing distance from Earth in au units
+           :param velocity: Float representing velocity of CloseApproach
+           :param neo: Determination of if CloseApproach is also an NEO
+           :return: self.neo which is used in other modules.
+           
+           Default values were given with the arguments, as well as 
+           reiterated below using if/else statements. Each value has 
+           been given an assertion statement to ensure they are the 
            required type. Spaces were added between arguments for 
            readability.
         """
        
-        self._designation = str(_designation)
+        self._designation = _designation
         assert isinstance(self._designation, str), """_designation must 
         resolve to a string"""
 
-        self.time = cd_to_datetime(time)  
+        self.time = time
         assert isinstance(self.time, datetime.datetime), """time must be 
         a datetime"""
 
-        self.distance = float(distance)
+        self.distance = distance
         assert isinstance(self.distance, float), "distance must be a float"
 
-        self.velocity = float(velocity)
+        self.velocity = velocity
         assert isinstance(self.velocity, float), "velocity must be a float"
 
         # Create an attribute for the referenced NEO, originally None.
-        self.neo = None
+        self.neo = self._designation
     
 
     @property
@@ -168,6 +176,7 @@ class CloseApproach:
         The `datetime_to_str` method converts a `datetime` object to a
         formatted string that can be used in human-readable representations and
         in serialization to CSV and JSON files.
+
         _______________________________________
 
         An if/else statement was added to determine if there is a value 
@@ -175,11 +184,22 @@ class CloseApproach:
         value is run through the datetime_to_str function. 
         """
         
-        if self.time is None: 
-            return "Time Unknown to NASA"
-        else:
+        if self.time is not None:
             return datetime_to_str(self.time)
+        
 
+    def serialize(self): 
+        """ Returns a dictionary representation of self attributes relevant
+            to CloseApproach
+        
+            Returns: Keys of self attributes
+        """
+
+        return {
+            "datetime_utc": datetime_to_str(self.time),
+            "distance_au": self.distance,
+            "velocity_km_s": self.velocity
+        }
 
     def __str__(self):
         """Return `str(self)`. Numerical arguments were given ':.2f' at 
@@ -187,12 +207,14 @@ class CloseApproach:
         values to two digits. 
         """
 
-        return f"""On {self.time}, a CloseApproach ({self._designation}) 
+        return f"""On {self.time_str}, a CloseApproach, {self.neo.fullname},  
                 came within {self.distance:.2f} au of Earth, hurdling at a 
-                speed of {self.velocity:.2f} km/s!
+                velocity of {self.velocity:.2f} km/s!
                 """
 
     def __repr__(self):
         """Return `repr(self)`, a computer-readable string representation of this object."""
         return (f"CloseApproach(time={self.time_str!r}, distance={self.distance:.2f}, "
                 f"velocity={self.velocity:.2f}, neo={self.neo!r})")
+
+

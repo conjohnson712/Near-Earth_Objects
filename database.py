@@ -37,13 +37,50 @@ class NEODatabase:
 
         :param neos: A collection of `NearEarthObject`s.
         :param approaches: A collection of `CloseApproach`es.
+
+        Inspiration on how to complete this segment came from:
+        The following Mentor response in Knowledge: 
+        https://knowledge.udacity.com/questions/632763
+
+        Lesson 2, Concept 17: Dictionaries: 
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/b0daa716-c1d0-4f3a-9608-5506bf99db0e
+
+        Lesson 2, Concept 20: Comprehensions:
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/d44e42d5-0eee-4c28-a8a7-c3c67df00bec
         """
         self._neos = neos
         self._approaches = approaches
 
-        # TODO: What additional auxiliary data structures will be useful?
+        
 
-        # TODO: Link together the NEOs and their close approaches.
+        # Create Empty dictionaries for Designation and Name Key-Value 
+        # pairs to be stored in
+        self._designation_dict = {} 
+        self._name_dict = {} 
+
+
+        # Scan through neos for designations and names
+        for neo in self._neos:
+            if neo.designation is not None: 
+                self._designation_dict[neo.designation] = neo
+            
+
+            if neo.name is not None: 
+                self._name_dict[neo.name] = neo
+            
+
+
+        # Scan through approaches for designations and neo
+        # ca = CloseApproach
+        for ca in self._approaches: 
+            self._designation_dict[ca._designation] = neo
+            
+            if ca.neo is not None: 
+                ca.neo = neo
+                
+            
+            neo.approaches.append(ca)
+
 
     def get_neo_by_designation(self, designation):
         """Find and return an NEO by its primary designation.
@@ -57,9 +94,16 @@ class NEODatabase:
 
         :param designation: The primary designation of the NEO to search for.
         :return: The `NearEarthObject` with the desired primary designation, or `None`.
+        
+        Inspired by .get portion of Lesson 2, Concept 17: Dictionaries: 
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/b0daa716-c1d0-4f3a-9608-5506bf99db0e
+
+        .upper was used to ensure that the designation is in all caps to match 
+        the data. .get allows for the default None to be set. 
         """
-        # TODO: Fetch an NEO by its primary designation.
-        return None
+     
+
+        return self._designation_dict.get(designation.upper(), None)
 
     def get_neo_by_name(self, name):
         """Find and return an NEO by its name.
@@ -74,9 +118,16 @@ class NEODatabase:
 
         :param name: The name, as a string, of the NEO to search for.
         :return: The `NearEarthObject` with the desired name, or `None`.
+
+        Inspired by .get portion of Lesson 2, Concept 17: Dictionaries: 
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/b0daa716-c1d0-4f3a-9608-5506bf99db0e
+
+        .capitalize() was added to ensure the names match those in the data. 
+        .get allows for the default value of None to be set
         """
-        # TODO: Fetch an NEO by its name.
-        return None
+        
+        
+        return self._name_dict.get(name.capitalize(), None)
 
     def query(self, filters=()):
         """Query close approaches to generate those that match a collection of filters.
@@ -87,11 +138,21 @@ class NEODatabase:
         If no arguments are provided, generate all known close approaches.
 
         The `CloseApproach` objects are generated in internal order, which isn't
-        guaranteed to be sorted meaninfully, although is often sorted by time.
+        guaranteed to be sorted meaningfully, although is often sorted by time.
 
         :param filters: A collection of filters capturing user-specified criteria.
         :return: A stream of matching `CloseApproach` objects.
+
+        Inspired by pseudocode from the following Knowledge question: 
+        https://knowledge.udacity.com/questions/633232
+
+        And from Lesson 3, Concept 13/14: Higher Order Functions Exercise 
+        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/406e03f0-82b1-46aa-b7c1-0223223240cb/concepts/e6d2975e-ce00-4a31-b778-dca024115eab
+
         """
-        # TODO: Generate `CloseApproach` objects that match all of the filters.
+
         for approach in self._approaches:
-            yield approach
+            flag = False in map(lambda x: x(approach), filters)
+        
+            if flag == True: 
+                yield approach

@@ -44,12 +44,15 @@ def load_neos(neo_csv_path):
 
         reader = csv.DictReader(neo_infile) # DictReader uses headers
         for row in reader:
+            if row['pdes'] is not None: 
+                row['pdes'] = str(row['pdes'])
+            
             if row['name'] in [None, '']:
                 row['name'] = None
             else:
                 row['name'] = str(row['name'])
 
-            if row['diameter'] is None:
+            if row['diameter'] is "":
                 row['diameter'] = float('nan')
             else:
                 row['diameter'] = float(row['diameter'])
@@ -94,28 +97,33 @@ def load_approaches(cad_json_path):
         ca_data_in = []
 
         contents = json.load(ca_infile)
-        for row in contents:
-            if row['time'] is None:
-                row['time'] = "Time Unknown to NASA"
-            else:
-                row['time'] = cd_to_datetime(row['time'])
-            
-            if row['distance'] is None:
-                row['distance'] = float('nan')
-            else: 
-                row['distance'] = float(row['distance'])
+        content_data = contents["data"]
 
-            if row['velocity'] is None: 
-                row['velocity'] = float('nan')
+        for row in content_data:
+            if row[0] is not None:
+                row[0] = str(row[0])
+
+            if row[3] is None:
+                row[3] = "Time Unknown to NASA"
+            else:
+                row[3] = cd_to_datetime(row[3])
+            
+            if row[4] is None:
+                row[4] = float('nan')
             else: 
-                row['velocity'] = float(row['velocity'])
+                row[4] = float(row[4])
+
+            if row[7] is None: 
+                row[7] = float('nan')
+            else: 
+                row[7] = float(row[7])
 
 
             ca_data_out = CloseApproach(
-                _designation = row['des'],
-                time = row['cd'], 
-                distance = row['dist'], 
-                velocity = row['v_rel']
+                _designation = row[0],
+                time = row[3], 
+                distance = row[4], 
+                velocity = row[7]
             )
 
             ca_data_in.append(ca_data_out)
