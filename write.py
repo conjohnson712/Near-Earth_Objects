@@ -41,11 +41,11 @@ def write_to_csv(results, filename):
         for approach in results: 
             writer.writerow({
                 'datetime_utc': approach.time, 
-                'distance-au': approach.distance,
+                'distance_au': approach.distance,
                 'velocity_km_s': approach.velocity,
                 'designation': approach._designation,
                 'name': approach.neo.name, 
-                'diameter_km': approach.neo.diameter_km, 
+                'diameter_km': approach.neo.diameter, 
                 'potentially_hazardous': approach.neo.hazardous
             })
 
@@ -78,7 +78,7 @@ def write_to_json(results, filename):
 
     for approach in results: 
         json_headers = {
-            'datetime_utc': approach.time,
+            'datetime_utc': approach.time_str,
             'distance_au': approach.distance,
             'velocity_km_s': approach.velocity, 
             'neo': {

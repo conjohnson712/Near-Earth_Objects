@@ -202,13 +202,13 @@ def create_filters(date=None, start_date=None, end_date=None,
     """
 
     if start_date is not None:
-        filters.append(DateFilter(operator.ge, date))
+        filters.append(DateFilter(operator.ge, start_date))
 
     if date is not None: 
         filters.append(DateFilter(operator.eq, date))
 
     if end_date is not None: 
-        filters.append(DateFilter(operator.le, date))
+        filters.append(DateFilter(operator.le, end_date))
     
     if distance_min is not None: 
         filters.append(DistanceFilter(operator.ge, distance_min))

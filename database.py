@@ -73,7 +73,7 @@ class NEODatabase:
         # Scan through approaches for designations and neo
         # ca = CloseApproach
         for ca in self._approaches: 
-            self._designation_dict[ca._designation] = neo
+            neo = self._designation_dict[ca._designation]
             
             if ca.neo is not None: 
                 ca.neo = neo
@@ -155,7 +155,7 @@ class NEODatabase:
         """
 
         for approach in self._approaches:
-            flag = False in map(lambda x: x(approach), filters)
+            flag = False not in map(lambda x: x(approach), filters)
         
             if flag == True: 
                 yield approach
