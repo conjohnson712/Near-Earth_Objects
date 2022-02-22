@@ -1,5 +1,4 @@
-"""A database encapsulating collections of near-Earth objects and their
-close approaches.
+"""A database encapsulating near-Earth objects and their close approaches.
 
 A `NEODatabase` holds an interconnected data set of NEOs and close
 approaches. It provides methods to fetch an NEO by primary designation
@@ -12,8 +11,6 @@ and `extract.load_approaches`.
 
 You'll edit this file in Tasks 2 and 3.
 """
-
-
 class NEODatabase:
     """A database of near-Earth objects and their close approaches.
 
@@ -22,6 +19,7 @@ class NEODatabase:
     structures to help fetch NEOs by primary designation or by name and
     to help speed up querying for close approaches that match criteria.
     """
+
     def __init__(self, neos, approaches):
         """Create a new `NEODatabase`.
 
@@ -98,7 +96,6 @@ class NEODatabase:
         .upper was used to ensure that the designation is in all caps to match
         the data. .get allows for the default None to be set.
         """
-
         return self._designation_dict.get(designation.upper(), None)
 
     def get_neo_by_name(self, name):
@@ -119,16 +116,13 @@ class NEODatabase:
         .get allows for the default value of None to be set
 
         References:
-
         Inspired by .get portion of Lesson 2, Concept 17: Dictionaries:
         https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/f54b2b40-94d2-4d75-b26b-163f583d5175/concepts/b0daa716-c1d0-4f3a-9608-5506bf99db0e
         """
-
         return self._name_dict.get(name.capitalize(), None)
 
     def query(self, filters=()):
-        """Query close approaches to generate those that match a
-        collection of filters.
+        """Query close approaches, generate a collection of filters.
 
         This generates a stream of `CloseApproach` objects that match
         all of the provided filters.
@@ -144,14 +138,12 @@ class NEODatabase:
         :return: A stream of matching `CloseApproach` objects.
 
         References:
-
         Inspired by pseudocode from the following Knowledge question:
         https://knowledge.udacity.com/questions/633232
 
         And from Lesson 3, Concept 13/14: Higher Order Functions Exercise
         https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/406e03f0-82b1-46aa-b7c1-0223223240cb/concepts/e6d2975e-ce00-4a31-b778-dca024115eab
         """
-
         for approach in self._approaches:
             flag = False not in map(lambda x: x(approach), filters)
 

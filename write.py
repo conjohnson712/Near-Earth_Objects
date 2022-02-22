@@ -71,7 +71,6 @@ def write_to_json(results, filename):
 
     Tasks
     """
-
     json_list = []
 
     for approach in results:

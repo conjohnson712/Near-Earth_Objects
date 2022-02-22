@@ -1,5 +1,4 @@
-"""Provide filters for querying close approaches and limit the generated
-results.
+"""Provide filters for querying close approaches and limit results.
 
 The `create_filters` function produces a collection of objects that is
 used by the `query` method to generate a stream of `CloseApproach`
@@ -44,9 +43,9 @@ class AttributeFilter:
     custom behavior to fetch a desired attribute from the given
     `CloseApproach`.
     """
+
     def __init__(self, op, value):
-        """Construct a new `AttributeFilter` from an binary predicate
-        and a reference value.
+        """Construct `AttributeFilter`.
 
         The reference value will be supplied as the second (right-hand
         side) argument to the operator function. For example, an
@@ -79,92 +78,87 @@ class AttributeFilter:
         raise UnsupportedCriterionError
 
     def __repr__(self):
+        """Return a computer-readable attribute."""
         return f"""{self.__class__.__name__}(op=operator.
         {self.op.__name__}, value={self.value})"""
 
 
-"""
-    Inspiration for filter design drawn from 'Tasks: 3A' portion of this
-    project's instructions:
-    https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/ab4e6345-8dc2-4439-8c67-afa21ae710ce/concepts/c6dc8c7b-97e2-42e6-a77a-64fb39b27203
-    (Accessed: 2/18/22)
+"""Inspiration for filter design drawn from 'Tasks: 3A' portion of this
+project's instructions:
+https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/ab4e6345-8dc2-4439-8c67-afa21ae710ce/concepts/c6dc8c7b-97e2-42e6-a77a-64fb39b27203
+(Accessed: 2/18/22)
 
     Docstring params copied from the class method above for consistency
 """
 
 
 class DateFilter(AttributeFilter):
-    """ A class designed to filter for date, start_date, and end_date """
+    """A class designed to filter for date, start_date, and end_date."""
 
     @classmethod
     def get(cls, approach):
-        """ Function that retrieves the desired attribute
+        """Retrieve the desired attribute.
 
-            :param approach: A `CloseApproach` on which to evaluate
-             this filter.
-            :returns: The time of the CloseApproach, translated to a date
+        :param approach: A `CloseApproach` on which to evaluate
+        this filter.
+        :returns: The time of the CloseApproach, translated to a date
         """
-
-        return approach.time.date()   # From Tasks 3A: 'On Comparing Dates'
+        return approach.time.date()  # From Tasks 3A: 'On Comparing Dates'
 
 
 class DistanceFilter(AttributeFilter):
-    """A class designed to filter for distance_min and distance_max """
+    """A class designed to filter for distance_min and distance_max."""
 
     @classmethod
     def get(cls, approach):
-        """ Function that retrieves the desired attribute
+        """Retrieve the desired attribute.
 
-            :param approach: A `CloseApproach` on which to evaluate
-             this filter.
-            :returns: The distance, in au, of the Close Approach
+        :param approach: A `CloseApproach` on which to evaluate
+        this filter.
+        :returns: The distance, in au, of the Close Approach
         """
-
         return approach.distance
 
 
 class VelocityFilter(AttributeFilter):
-    """ A class designed to filter for velocity_min and velocity_max"""
+    """A class designed to filter for velocity_min and velocity_max."""
 
     @classmethod
     def get(cls, approach):
-        """ Function that retrieves the desired attribute
+        """Retrieve the desired attribute.
 
-            :param approach: A `CloseApproach` on which to evaluate
-             this filter.
-            :returns: The Velocity, in km/s, of the Close Approach.
+        :param approach: A `CloseApproach` on which to evaluate
+        this filter.
+        :returns: The Velocity, in km/s, of the Close Approach.
         """
-
         return approach.velocity
 
 
 class DiameterFilter(AttributeFilter):
-    """ A class designed to filter for diameter_min and diameter_max"""
+    """A class designed to filter for diameter_min and diameter_max."""
 
     @classmethod
     def get(cls, approach):
-        """ Function that retrieves the desired attribute
+        """Retrieve the desired attribute.
 
-            :param approach: A `CloseApproach` on which to evaluate
-             this filter.
-            :returns: The diameter, in km, of the Close Approach NEO
+        :param approach: A `CloseApproach` on which to evaluate
+        this filter.
+        :returns: The diameter, in km, of the Close Approach NEO
         """
-
         return approach.neo.diameter
 
 
 class HazardousFilter(AttributeFilter):
-    """ A class designed to filter for Hazardous Potentiality """
+    """A class designed to filter for Hazardous Potentiality."""
 
     @classmethod
     def get(cls, approach):
-        """ Function that retrieves the desired attribute
+        """Retrieve the desired attribute.
 
-            :param approach: A `CloseApproach` on which to evaluate
-             this filter.
-            :returns: The Hazard status of the Close Approach NEO
+        :param approach: A `CloseApproach` on which to evaluate
+        this filter.
+        :returns: The Hazard status of the Close Approach NEO
         """
-
         return approach.neo.hazardous
 
 
@@ -214,22 +208,20 @@ def create_filters(date=None, start_date=None, end_date=None,
      is potentially hazardous.
     :return: A collection of filters for use with `query`.
     """
-
     filters = []
-    """ Create an empty list for filters """
+    """ Create an empty list for filters."""
 
     """ Date filters use the following operator pattern:
-        start_date <= date <= end_date. The operators for the
-        filters follow this also, with 'date' being the relative
-        point of comparison. This concept will be used throughout.
+    start_date <= date <= end_date. The operators for the
+    filters follow this also, with 'date' being the relative
+    point of comparison. This concept will be used throughout.
 
-        With parameters defaulted to None, we will use if statements to
-        check against them not being None to cover all edge cases.
+    With parameters defaulted to None, we will use if statements to
+    check against them not being None to cover all edge cases.
 
-        References:
-
-        Inspired from Tasks 3A: 'On Comparing Dates':
-        https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/ab4e6345-8dc2-4439-8c67-afa21ae710ce/concepts/c6dc8c7b-97e2-42e6-a77a-64fb39b27203
+    References:
+    Inspired from Tasks 3A: 'On Comparing Dates':
+    https://classroom.udacity.com/nanodegrees/nd303/parts/31252231-c52a-4a03-836f-f155c9a01edd/modules/cdd764fd-cd4e-4610-b206-8ea2f5a36968/lessons/ab4e6345-8dc2-4439-8c67-afa21ae710ce/concepts/c6dc8c7b-97e2-42e6-a77a-64fb39b27203
     """
 
     if start_date is not None:
@@ -266,13 +258,11 @@ def limit(iterator, n=None):
     :yield: The first (at most) `n` values from the iterator.
 
     References:
-
     Inspired by the following answers in Knowledge provided by the
     Mentor Shuaishuai:
     https://knowledge.udacity.com/questions/676611
     https://knowledge.udacity.com/questions/665490
     """
-
     if n in [0, None]:
         return islice(iterator, None)
     else:
